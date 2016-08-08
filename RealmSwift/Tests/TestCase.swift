@@ -105,7 +105,8 @@ class TestCase: XCTestCase {
         RLMRealm.resetRealmState()
     }
 
-    func dispatchSyncNewThread(block: () -> Void) {
+    func dispatchAsyncAndWait(block: () -> ()) {
+        let queue = DispatchQueue(label: "background")
         queue.async {
             autoreleasepool {
                 block()
@@ -114,8 +115,8 @@ class TestCase: XCTestCase {
         queue.sync { }
     }
 
-    func assertThrows<T>(_ block: @autoclosure(escaping)() -> T, named: String? = RLMExceptionName,
-                         _ message: String? = nil, fileName: String = #file, lineNumber: UInt = #line) {
+    func assertThrows<T>(_ block: @autoclosure(escaping)() -> T, _ message: String? = nil,
+                         named: String? = RLMExceptionName, fileName: String = #file, lineNumber: UInt = #line) {
         exceptionThrown = true
         RLMAssertThrowsWithName(self, { _ = block() }, named, message, fileName, lineNumber)
     }
@@ -251,8 +252,8 @@ class TestCase: XCTestCase {
     func resetRealmState() {
         RLMRealm.resetRealmState()
     }
-
-    func dispatchSyncNewThread(block: dispatch_block_t) {
+    
+    func dispatchAsyncAndWait(block: dispatch_block_t) {
         let queue = dispatch_queue_create("background", nil)
         dispatch_async(queue) {
             autoreleasepool {
