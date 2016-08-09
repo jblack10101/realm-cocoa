@@ -1,5 +1,6 @@
 get_swift_version() {
-    xcrun swift --version 2>/dev/null | sed -ne 's/^Apple Swift version \([^\b ]*\).*/\1/p'
+    #xcrun swift --version 2>/dev/null | sed -ne 's/^Apple Swift version \([^\b ]*\).*/\1/p'
+    echo 2.3
 }
 
 find_xcode_for_swift() {
